@@ -9,7 +9,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  hmi_core:
+    git:
+      url: https://github.com/a-givertzman/hmi_core.git
+      ref: 2.0.0
+  hmi_networking:
+    git:
+      url: https://github.com/a-givertzman/hmi_networking.git
+      ref: 1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -17,3 +24,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/settings/app-settings.json
+    - assets/translations/translations.json
