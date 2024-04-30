@@ -29,11 +29,15 @@ Future<void> main() async {
           'Connection',
         ],
       );
-      final reconnectStartup = _initJds(dsClient)..run();
+      final (reconnectStartup, jdsService) = _initJds(dsClient);
+      reconnectStartup.run();
       runApp(
         ExitListeningWidget(
           onExit: () => _onExit(log, reconnectStartup, dsClient, fileCache, memoryCache),
-          child: const MainApp(),
+          child: MainApp(
+            jdsService: jdsService,
+            dsClient: dsClient,
+          ),
         ),
       );
     },
@@ -94,7 +98,7 @@ DsClientReal _initDsClient(DsClientCache cache, {List<String> debugEvents = cons
   return dsClient;
 }
 
-JdsServiceStartupOnReconnect _initJds(DsClient dsClient) {
+(JdsServiceStartupOnReconnect, JdsService) _initJds(DsClient dsClient) {
   final jdsService = JdsService(
     dsClient: dsClient,
     route: const JdsServiceRoute(
@@ -102,12 +106,15 @@ JdsServiceStartupOnReconnect _initJds(DsClient dsClient) {
       serviceName: Setting('jds-service-name'),
     ),
   );
-  return JdsServiceStartupOnReconnect(
-    connectionStatuses: dsClient.streamInt('Local.System.Connection'),
-    startup: JdsServiceStartup(
-      service: jdsService,
+  return (
+    JdsServiceStartupOnReconnect(
+      connectionStatuses: dsClient.streamInt('Local.System.Connection'),
+      startup: JdsServiceStartup(
+        service: jdsService,
+      ),
+      isConnected: dsClient.isConnected(),
     ),
-    isConnected: dsClient.isConnected(),
+    jdsService,
   );
 }
 

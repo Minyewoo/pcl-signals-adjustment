@@ -17,6 +17,15 @@ dependencies:
     git:
       url: https://github.com/a-givertzman/hmi_networking.git
       ref: 1.1.0
+  hmi_widgets:
+    git:
+      url: https://github.com/a-givertzman/hmi_widgets.git
+      ref: 1.0.1
+  cma_registrator:
+    git:
+      url: https://github.com/a-givertzman/cma_registrator.git
+      ref: 0.0.2
+  davi: ^3.4.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
